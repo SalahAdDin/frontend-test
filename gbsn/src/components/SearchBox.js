@@ -1,26 +1,32 @@
 import React, { useState } from 'react'
+import Error from './Error';
 
-function Searcher(params) {
+function SearchBox({saveQuery}) {
      const [searchedTerm, saveSearchedTerm] = useState('');
+     // Handle select field
      const [error, saveError] = useState(false);
 
      const searchPost = e => {
          e.preventDefault();
 
          // Validate
+         // TODO: It does not work
          if (searchedTerm === ''){
              saveError(true);
              return;
          }
 
          // Validate term to main component
-         saveError(true);
+         saveError(false);
+         saveQuery(searchedTerm);
      }
     return(
         <form onSubmit={searchPost} className="prestigio-responsive-central-pane">
             <div className="form-row pr-close-row">
                 <div className="form-group col col-12 col-md-4 mb-2 mb-md-3">
-                    <select className="form-control prestigio-new-input w-100 pr-select">
+                    <select 
+                    className="form-control prestigio-new-input w-100 pr-select"
+                    >
                         <option>Date</option>
                         <option>Name</option>
                     </select>
@@ -36,8 +42,9 @@ function Searcher(params) {
                       </div>
                     </div>
             </div>
+            { (error) ? <Error message="Use a valid term to search!"/> : null}
         </form>
     );
 }
 
-export default Searcher;
+export default SearchBox;
