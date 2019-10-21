@@ -9,19 +9,38 @@ function App() {
   const [mentionedSocialPost, saveMentionedSocialPost] = useState([]);
 
   useEffect(() => {
-
     const queryAPI = async () => {
+      let brand = "";
 
-      let brand = '';
+      /* TODO: Get the sidbrand from query 
 
-      if (query === '') return;
-      if (query === 'me') brand = 'Z2EfoOUFQJVs39lg';
+      https://adcaller.com/brands?qField=brand_name&qValue=me
+
+      */
+
+      const baseURL = `https://adcaller.com/`;
+      const brandURL = `${baseURL}brands`;
+      const sidBrandURL = `${brandURL}?qField=brand_name&qValue=${query}`;
+      //https://adcaller.com/brands?qField=brand_name&qValue=me
+      
       const postPerPage = 4;
-      const base_url=`https://adcaller.com/`;
-      const brands_url=`${base_url}brands/`;
-      const includes=`social%2Cmentions.brand`
+      const includes = `social%2Cmentions.brand`;
 
-      const url=`${brands_url}${brand}/mentioned_social_posts?limit=${postPerPage}&includes=${includes}`
+      if (query === "") return;
+      else if (query === "me") brand = "Z2EfoOUFQJVs39lg";
+      else {
+        // Getting the sidbrand in order to get the brand
+        const searchBrand = await fetch(sidBrandURL);
+        const searchBrandResult = await searchBrand.json();
+        // console.log("====================================");
+        // console.log(searchBrandResult);
+        // console.log("====================================");
+
+        brand = searchBrandResult.data.attributes[0].sidbrand;
+      }
+
+      const url = `${brandURL}/${brand}/mentioned_social_posts?limit=${postPerPage}&includes=${includes}&page=${currentPage}`;
+      /* https://adcaller.com/brands/Z2EfoOUFQJVs39lg/mentioned_social_posts?page=2&limit=4&includes=social%2Cmentions.brand*/
 
       const answer = await fetch(url);
       const result = await answer.json();
@@ -30,9 +49,9 @@ function App() {
 
       // console.log('====================================');
       // console.log(result);
-      // console.log('====================================');
-      /* https://adcaller.com/brands/Z2EfoOUFQJVs39lg/mentioned_social_posts?limit=4&includes=social%2Cmentions.brand*/
-    }
+      // console.log("====================================");
+      
+    };
     queryAPI();
   }, [query]);
 
