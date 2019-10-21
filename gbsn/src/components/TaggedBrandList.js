@@ -2,9 +2,6 @@ import React from 'react'
 import TaggedBrand from './TaggedBrand'
 
 function TaggedBrandList ({mentions}) {
-    console.log('====================================');
-    console.log(mentions);
-    console.log('====================================');
     const brand_number=mentions.length;
     return(
         <div className="mb-2">

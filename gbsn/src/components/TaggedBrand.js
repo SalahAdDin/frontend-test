@@ -1,9 +1,6 @@
 import React from "react";
 
 const TaggedBrand = ({ brand }) => {
-  console.log("====================================");
-  console.log(brand);
-  console.log("====================================");
 
   const { brand_logo_url, brand_name } = brand.brand[0];
   // brand_url is required

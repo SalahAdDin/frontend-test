@@ -1,10 +1,8 @@
 import React from "react";
+import ReactHashtag from "react-hashtag";
 import TaggedBrandList from "./TaggedBrandList";
 
 const SocialPost = ({ post }) => {
-  console.log("====================================");
-  console.log(post);
-  console.log("====================================");
 
   const {
     facebook,
