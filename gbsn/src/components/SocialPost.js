@@ -47,7 +47,14 @@ const SocialPost = ({ post }) => {
                         <span className={socialClass}>{social}</span>
                         <span className="ptp-h-sep"> . </span>
                         <span className="ptp-h-date">
-                          {post_date.toLocaleString("en-US", { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false})}
+                          {post_date.toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: false
+                          })}
                         </span>
                         <span className="ptp-h-sep"> . </span>
                         <span className="ptp-h-prv">
@@ -136,7 +143,7 @@ const SocialPost = ({ post }) => {
               <div className="small-title-span p-0 mb-2">
                 <span>TAGGED BRANDS</span>
               </div>
-              <TaggedBrandList mentions={mentions}/>
+              <TaggedBrandList mentions={mentions} />
             </div>
             <div className="text-right">
               <button
@@ -144,7 +151,7 @@ const SocialPost = ({ post }) => {
                 className="prestigio-btn prestigio-blue-white prestigio-shadow"
                 data-toggle="modal"
                 data-target="#shareModal"
-                onClick={() =>  window.location.href=url}
+                onClick={() => (window.location.href = url)}
               >
                 <i className="pr-icon-share"></i> SHARE
               </button>
