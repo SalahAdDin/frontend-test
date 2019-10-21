@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import SearchBox from './components/SearchBox';
+import FilterBox from './components/FiltersBox';
+import MentionedSocialPostList from './components/MentionedSocialPostList';
 
 function App() {
   
@@ -42,8 +44,14 @@ function App() {
             <div className="row no-gutters">
               <div className="col col-10 col-lg-10 col-md-8 col-sm-8 offset-1 offset-lg-1 offset-md-2 offset-sm-2 prestigio-white-stripe prestigio-shadow">               
                 <SearchBox saveQuery={saveQuery}/>
-                <div className="prestigio-responsive-central-pane"></div>
-                {/* <div className="prestigio-tab-pane" style="display: block;" id="brand-pane" data-tabs="mentions"></div> */}
+                <FilterBox />
+                <div className="prestigio-tab-pane" style={{display: `block`}} id="brand-pane" data-tabs="mentions">
+								  <div className="prestigio-offset-pane-big">
+									  <div className="row pr-responsive-row">
+                      <MentionedSocialPostList mentionedSocialPost={mentionedSocialPost}/>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
