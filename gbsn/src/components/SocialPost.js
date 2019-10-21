@@ -60,12 +60,18 @@ const SocialPost = ({ post }) => {
                 <div className="ptp-content mb-2">
                   <div className="ptp-c-text">
                     <p className="mb-0">
-                      {post_content.text}{" "}
-                      <object type="prestigio/link">
-                        <a href="/influencer/hashtag-results.html">
-                          #sportmove
-                        </a>
-                      </object>
+                      {/* TODO: Get the hashtag url*/}
+                      <ReactHashtag
+                        renderHashtag={hashtagValue => (
+                          <object type="prestigio/link">
+                            <a href="/influencer/hashtag-results.html">
+                              {hashtagValue}
+                            </a>
+                          </object>
+                        )}
+                      >
+                        {post_content.text}
+                      </ReactHashtag>
                     </p>
                   </div>
                   <div className="ptp-c-thumb">
