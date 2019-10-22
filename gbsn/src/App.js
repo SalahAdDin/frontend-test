@@ -1,30 +1,38 @@
 import React, { useState, useEffect } from "react";
+import useInfiniteScroll from "./components/useInfiniteScroll";
 import SearchBox from "./components/SearchBox";
 import FilterBox from "./components/FiltersBox";
 import MentionedSocialPostList from "./components/MentionedSocialPostList";
 
+
 function App() {
   const [query, saveQuery] = useState("");
   const [mentionedSocialPost, saveMentionedSocialPost] = useState([]);
+  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
+  const [currentPage, saveCurrentPage] = useState(1);
+  // const [totalPages, saveTotalPages] = useState(1);
+
+  function fetchMoreListItems() {
+      saveCurrentPage(currentPage+1);
+      setIsFetching(false);
+
+      console.log('====================================');
+      console.log(currentPage);
+      console.log('====================================');
+  }
 
   useEffect(() => {
     const queryAPI = async () => {
+      
       let brand = "";
-
-      /* TODO: Get the sidbrand from query 
-
-      https://adcaller.com/brands?qField=brand_name&qValue=me
-
-      */
+      const postPerPage = 4;
+      const includes = `social%2Cmentions.brand`;
 
       const baseURL = `https://adcaller.com/`;
       const brandURL = `${baseURL}brands`;
       const sidBrandURL = `${brandURL}?qField=brand_name&qValue=${query}`;
       //https://adcaller.com/brands?qField=brand_name&qValue=me
       
-      const postPerPage = 4;
-      const includes = `social%2Cmentions.brand`;
-
       if (query === "") return;
       else if (query === "me") brand = "Z2EfoOUFQJVs39lg";
       else {
@@ -46,13 +54,19 @@ function App() {
 
       saveMentionedSocialPost(result.data.attributes);
 
-      // console.log('====================================');
+      // Calculate total pages
+      // const calculateTotalPages = Math.ceil(
+      //   result.meta.totalResults / postPerPage
+      // );
+      // saveTotalPages(calculateTotalPages);
+
+      // console.log("====================================");
       // console.log(result);
       // console.log("====================================");
       
     };
     queryAPI();
-  }, [query]);
+  }, [query, currentPage]);
 
   return (
     <div className="App brand-prestigio">
@@ -76,6 +90,7 @@ function App() {
                       />
                     </div>
                   </div>
+                  {isFetching && 'Fetching more list items...'}
                 </div>
               </div>
             </div>
