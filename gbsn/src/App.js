@@ -3,11 +3,13 @@ import useInfiniteScroll from "./components/useInfiniteScroll";
 import SearchBox from "./components/SearchBox";
 import FilterBox from "./components/FiltersBox";
 import MentionedSocialPostList from "./components/MentionedSocialPostList";
+import TopMentionersList from "./components/TopMentionersList";
 
 
 function App() {
   const [query, saveQuery] = useState("");
   const [mentionedSocialPost, saveMentionedSocialPost] = useState([]);
+  const [topMentioners, saveTopMentioners] = useState([]);
   const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   const [currentPage, saveCurrentPage] = useState(1);
   // const [totalPages, saveTotalPages] = useState(1);
@@ -26,10 +28,11 @@ function App() {
       
       let brand = "";
       const postPerPage = 4;
-      const includes = `social%2Cmentions.brand`;
+      const includes = `user%2Csocial%2Cmentions.brand`;
 
       const baseURL = `https://adcaller.com/`;
       const brandURL = `${baseURL}brands`;
+      const userBaseURL = `${baseURL}users`
       const sidBrandURL = `${brandURL}?qField=brand_name&qValue=${query}`;
       //https://adcaller.com/brands?qField=brand_name&qValue=me
       
@@ -48,6 +51,21 @@ function App() {
 
       const answer = await fetch(url);
       const result = await answer.json();
+
+      // TODO: Get top mentioner list
+      let topMentionerList = result.data.attributes.reduce((r, a) => {
+        let mentioner = {}
+        mentioner.name = a.user[0].userinfo.displayname;
+        mentioner.post++;
+        r[a.usersid] = [...r[a.usersid] || [], a];
+        r[a.usersid]['name'] = a.user[0].userinfo.displayname;
+        // TODO: just add increase a counter and add the name
+        return r;
+       }, {});
+
+       console.log('====================================');
+       console.log(topMentionerList);
+       console.log('====================================');
 
       saveMentionedSocialPost(m=>[...m, ...result.data.attributes])
     };
@@ -74,6 +92,7 @@ function App() {
                       <MentionedSocialPostList
                         mentionedSocialPost={mentionedSocialPost}
                       />
+                      {/*<TopMentionersList />*/}
                     </div>
                   </div>
                   {isFetching && 'Fetching more list items...'}
