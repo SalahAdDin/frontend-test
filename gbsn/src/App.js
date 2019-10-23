@@ -39,9 +39,6 @@ function App() {
         // Getting the sidbrand in order to get the brand
         const searchBrand = await fetch(sidBrandURL);
         const searchBrandResult = await searchBrand.json();
-        // console.log("====================================");
-        // console.log(searchBrandResult);
-        // console.log("====================================");
 
         brand = searchBrandResult.data.attributes[0].sidbrand;
       }
@@ -76,7 +73,7 @@ function App() {
             <div className="row no-gutters">
               <div className="col col-10 col-lg-10 col-md-8 col-sm-8 offset-1 offset-lg-1 offset-md-2 offset-sm-2 prestigio-white-stripe prestigio-shadow">
                 <SearchBox saveQuery={saveQuery} />
-                <FilterBox />
+                <FilterBox saveMentionedSocialPost={saveMentionedSocialPost}/>
                 <div
                   className="prestigio-tab-pane"
                   style={{ display: `block` }}
