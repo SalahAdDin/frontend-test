@@ -49,18 +49,7 @@ function App() {
       const answer = await fetch(url);
       const result = await answer.json();
 
-      saveMentionedSocialPost(result.data.attributes);
-
-      // Calculate total pages
-      // const calculateTotalPages = Math.ceil(
-      //   result.meta.totalResults / postPerPage
-      // );
-      // saveTotalPages(calculateTotalPages);
-
-      // console.log("====================================");
-      // console.log(result);
-      // console.log("====================================");
-      
+      saveMentionedSocialPost(m=>[...m, ...result.data.attributes])
     };
     queryAPI();
   }, [query, currentPage]);
