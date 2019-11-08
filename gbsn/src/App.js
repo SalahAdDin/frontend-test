@@ -4,6 +4,7 @@ import SearchBox from "./components/SearchBox";
 import FilterBox from "./components/FiltersBox";
 import MentionedSocialPostList from "./components/MentionedSocialPostList";
 import TopMentionersList from "./components/TopMentionersList";
+import Error from "./components/Error";
 
 function App() {
   const [query, saveQuery] = useState("");
@@ -11,6 +12,7 @@ function App() {
   const [topMentioners, saveTopMentioners] = useState([]);
   const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   const [currentPage, saveCurrentPage] = useState(1);
+  const [error, saveError] = useState(false);
   // const [totalPages, saveTotalPages] = useState(1);
 
   function fetchMoreListItems() {
@@ -38,10 +40,16 @@ function App() {
       else if (query === "me") brand = "Z2EfoOUFQJVs39lg";
       else {
         // Getting the sidbrand in order to get the brand
+        // TODO: Improve the brand searching method. but it depends on the API.
         const searchBrand = await fetch(sidBrandURL);
         const searchBrandResult = await searchBrand.json();
 
-        brand = searchBrandResult.data.attributes[0].sidbrand;
+        if (searchBrandResult.data.attributes[0]) brand = searchBrandResult.data.attributes[0].sidbrand;
+        else {
+          saveError(true);
+          return;
+        }
+        // if it cannot get the result, raise an error
       }
 
       const url = `${brandURL}/${brand}/mentioned_social_posts?limit=${postPerPage}&includes=${includes}&page=${currentPage}`;
@@ -65,6 +73,7 @@ function App() {
       console.log(topMentionerList);
       console.log("====================================");
 
+      saveError(false);
       saveMentionedSocialPost(m => [...m, ...result.data.attributes]);
       saveTopMentioners(Object.values(topMentionerList));
     };
@@ -96,6 +105,7 @@ function App() {
                   </div>
                   {isFetching && "Fetching more list items..."}
                 </div>
+                {error ? <Error message="No brand was matched with your query!" /> : null}
               </div>
             </div>
           </div>

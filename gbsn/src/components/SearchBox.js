@@ -10,7 +10,6 @@ function SearchBox({ saveQuery }) {
     e.preventDefault();
 
     // Validate
-    // TODO: It does not work
     if (searchedTerm === "") {
       saveError(true);
       return;
