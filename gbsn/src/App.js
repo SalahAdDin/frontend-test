@@ -32,7 +32,7 @@ function App() {
 
       const baseURL = `https://adcaller.com/`;
       const brandURL = `${baseURL}brands`;
-      const userBaseURL = `${baseURL}users`
+      // const userBaseURL = `${baseURL}users`
       const sidBrandURL = `${brandURL}?qField=brand_name&qValue=${query}`;
       //https://adcaller.com/brands?qField=brand_name&qValue=me
       
@@ -54,20 +54,21 @@ function App() {
 
       // TODO: Get top mentioner list
       let topMentionerList = result.data.attributes.reduce((r, a) => {
-        let mentioner = {}
-        mentioner.name = a.user[0].userinfo.displayname;
-        mentioner.post++;
         r[a.usersid] = [...r[a.usersid] || [], a];
         r[a.usersid]['name'] = a.user[0].userinfo.displayname;
-        // TODO: just add increase a counter and add the name
+        r[a.usersid]['key'] = a.usersid;
+        r[a.usersid]['picture'] = a.user[0].userinfo.avatar_url;
+        // TODO: just add increase a counter and add the name and photo url
         return r;
        }, {});
+       // TODO: sort in descendent order
 
        console.log('====================================');
        console.log(topMentionerList);
        console.log('====================================');
 
       saveMentionedSocialPost(m=>[...m, ...result.data.attributes])
+      saveTopMentioners(Object.values(topMentionerList));
     };
     queryAPI();
   }, [query, currentPage]);
@@ -92,7 +93,8 @@ function App() {
                       <MentionedSocialPostList
                         mentionedSocialPost={mentionedSocialPost}
                       />
-                      {/*<TopMentionersList />*/}
+                      <TopMentionersList 
+                      topMentioners={topMentioners}/>
                     </div>
                   </div>
                   {isFetching && 'Fetching more list items...'}
