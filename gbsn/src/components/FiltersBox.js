@@ -1,19 +1,20 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 
-function FilterBox({saveMentionedSocialPost}) {
-  const [option, saveOption] = useState('all');
+function FilterBox({ saveMentionedSocialPost }) {
+  const [option, saveOption] = useState("all");
 
   const filterList = e => {
     e.preventDefault();
-    saveMentionedSocialPost(m => m.filter(post=>post.social===option));
+    saveMentionedSocialPost(m => m.filter(post => post.social === option));
     // TODO: get the initial list in order to filter from 0 and not with the final array
-  }
+  };
 
   return (
     <form onSubmit={filterList} className="prestigio-responsive-central-pane">
       <div className="row pr-close-row">
         <div className="col col-auto mb-3">
-          <button onClick={e => saveOption('all')}
+          <button
+            onClick={e => saveOption("all")}
             type="submit"
             className="prestigio-btn prestigio-blue-white-inverse metrics-picker selected prestigio-shadow"
           >
@@ -21,7 +22,8 @@ function FilterBox({saveMentionedSocialPost}) {
           </button>
         </div>
         <div className="col col-auto mb-3">
-          <button onClick={e=>saveOption('facebook')}
+          <button
+            onClick={e => saveOption("facebook")}
             type="submit"
             className="prestigio-btn square metrics-picker prestigio-shadow facebook"
           >
@@ -29,7 +31,8 @@ function FilterBox({saveMentionedSocialPost}) {
           </button>
         </div>
         <div className="col col-auto mb-3">
-          <button onClick={e => saveOption('instagram')}
+          <button
+            onClick={e => saveOption("instagram")}
             type="submit"
             className="prestigio-btn square metrics-picker prestigio-shadow instagram"
           >

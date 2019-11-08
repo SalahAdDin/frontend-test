@@ -5,7 +5,6 @@ import FilterBox from "./components/FiltersBox";
 import MentionedSocialPostList from "./components/MentionedSocialPostList";
 import TopMentionersList from "./components/TopMentionersList";
 
-
 function App() {
   const [query, saveQuery] = useState("");
   const [mentionedSocialPost, saveMentionedSocialPost] = useState([]);
@@ -15,17 +14,16 @@ function App() {
   // const [totalPages, saveTotalPages] = useState(1);
 
   function fetchMoreListItems() {
-      saveCurrentPage(currentPage+1);
-      setIsFetching(false);
+    saveCurrentPage(currentPage + 1);
+    setIsFetching(false);
 
-      console.log('====================================');
-      console.log(currentPage);
-      console.log('====================================');
+    console.log("====================================");
+    console.log(currentPage);
+    console.log("====================================");
   }
 
   useEffect(() => {
     const queryAPI = async () => {
-      
       let brand = "";
       const postPerPage = 4;
       const includes = `user%2Csocial%2Cmentions.brand`;
@@ -35,7 +33,7 @@ function App() {
       // const userBaseURL = `${baseURL}users`
       const sidBrandURL = `${brandURL}?qField=brand_name&qValue=${query}`;
       //https://adcaller.com/brands?qField=brand_name&qValue=me
-      
+
       if (query === "") return;
       else if (query === "me") brand = "Z2EfoOUFQJVs39lg";
       else {
@@ -54,20 +52,20 @@ function App() {
 
       // TODO: Get top mentioner list
       let topMentionerList = result.data.attributes.reduce((r, a) => {
-        r[a.usersid] = [...r[a.usersid] || [], a];
-        r[a.usersid]['name'] = a.user[0].userinfo.displayname;
-        r[a.usersid]['key'] = a.usersid;
-        r[a.usersid]['picture'] = a.user[0].userinfo.avatar_url;
+        r[a.usersid] = [...(r[a.usersid] || []), a];
+        r[a.usersid]["name"] = a.user[0].userinfo.displayname;
+        r[a.usersid]["key"] = a.usersid;
+        r[a.usersid]["picture"] = a.user[0].userinfo.avatar_url;
         // TODO: just add increase a counter and add the name and photo url
         return r;
-       }, {});
-       // TODO: sort in descendent order
+      }, {});
+      // TODO: sort in descendent order
 
-       console.log('====================================');
-       console.log(topMentionerList);
-       console.log('====================================');
+      console.log("====================================");
+      console.log(topMentionerList);
+      console.log("====================================");
 
-      saveMentionedSocialPost(m=>[...m, ...result.data.attributes])
+      saveMentionedSocialPost(m => [...m, ...result.data.attributes]);
       saveTopMentioners(Object.values(topMentionerList));
     };
     queryAPI();
@@ -81,7 +79,7 @@ function App() {
             <div className="row no-gutters">
               <div className="col col-10 col-lg-10 col-md-8 col-sm-8 offset-1 offset-lg-1 offset-md-2 offset-sm-2 prestigio-white-stripe prestigio-shadow">
                 <SearchBox saveQuery={saveQuery} />
-                <FilterBox saveMentionedSocialPost={saveMentionedSocialPost}/>
+                <FilterBox saveMentionedSocialPost={saveMentionedSocialPost} />
                 <div
                   className="prestigio-tab-pane"
                   style={{ display: `block` }}
@@ -93,11 +91,10 @@ function App() {
                       <MentionedSocialPostList
                         mentionedSocialPost={mentionedSocialPost}
                       />
-                      <TopMentionersList 
-                      topMentioners={topMentioners}/>
+                      <TopMentionersList topMentioners={topMentioners} />
                     </div>
                   </div>
-                  {isFetching && 'Fetching more list items...'}
+                  {isFetching && "Fetching more list items..."}
                 </div>
               </div>
             </div>

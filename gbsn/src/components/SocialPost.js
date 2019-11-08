@@ -3,7 +3,6 @@ import ReactHashtag from "react-hashtag";
 import TaggedBrandList from "./TaggedBrandList";
 
 const SocialPost = ({ post }) => {
-
   const {
     facebook,
     instagram,

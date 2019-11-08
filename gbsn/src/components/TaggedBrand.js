@@ -1,7 +1,6 @@
 import React from "react";
 
 const TaggedBrand = ({ brand }) => {
-
   const { brand_logo_url, brand_name } = brand.brand[0];
   // brand_url is required
 
@@ -19,4 +18,3 @@ const TaggedBrand = ({ brand }) => {
 };
 
 export default TaggedBrand;
- 
