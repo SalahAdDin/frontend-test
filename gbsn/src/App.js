@@ -12,12 +12,15 @@ function App() {
   const [topMentioners, saveTopMentioners] = useState([]);
   const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   const [currentPage, saveCurrentPage] = useState(1);
+  const [allPostsLoaded, setPostsLoaded] = useState(false);
   const [error, saveError] = useState(false);
   // const [totalPages, saveTotalPages] = useState(1);
 
   function fetchMoreListItems() {
-    saveCurrentPage(currentPage + 1);
-    setIsFetching(false);
+    if (!allPostsLoaded) {
+      saveCurrentPage(currentPage + 1);
+    }
+  }
 
   useEffect(() => {
     saveTopMentioners([]);
