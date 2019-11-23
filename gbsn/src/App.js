@@ -19,10 +19,19 @@ function App() {
     saveCurrentPage(currentPage + 1);
     setIsFetching(false);
 
-    console.log("====================================");
-    console.log(currentPage);
-    console.log("====================================");
-  }
+  useEffect(() => {
+    saveTopMentioners([]);
+    saveMentionedSocialPost([]);
+    saveCurrentPage(1);
+    setPostsLoaded(false);
+    queryAPI();
+  }, [query]);
+
+  useEffect(() => {
+    if (currentPage > 1) {
+      queryAPI();
+    }
+  }, [currentPage]);
 
   useEffect(() => {
     const queryAPI = async () => {

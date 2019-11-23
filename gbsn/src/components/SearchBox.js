@@ -19,6 +19,13 @@ function SearchBox({ saveQuery }) {
     saveError(false);
     saveQuery(searchedTerm);
   };
+
+  const requestData = e => {
+    if (e.key === "Enter") {
+      saveQuery(searchedTerm);
+    }
+  };
+
   return (
     <form onSubmit={searchPost} className="prestigio-responsive-central-pane">
       <div className="form-row pr-close-row">
@@ -34,8 +41,10 @@ function SearchBox({ saveQuery }) {
               type="search"
               className="form-control prestigio-new-input w-100"
               placeholder="Search..."
+              onKeyDown={e => requestData(e.target.value)}
               onChange={e => saveSearchedTerm(e.target.value)}
             />
+            {/* TODO: review this, is it duplicated? */}
             <button
               type="button"
               className="form-control prestigio-search-input-btn"
