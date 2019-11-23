@@ -1,20 +1,19 @@
 import React, { useState } from "react";
 
-function FilterBox({ saveMentionedSocialPost }) {
-  const [option, saveOption] = useState("all");
-
-  const filterList = e => {
+function FilterBox({ saveOption }) {
+  const sendOption = (e, type) => {
     e.preventDefault();
-    saveMentionedSocialPost(m => m.filter(post => post.social === option));
-    // TODO: get the initial list in order to filter from 0 and not with the final array
+    saveOption(type);
   };
 
   return (
-    <form onSubmit={filterList} className="prestigio-responsive-central-pane">
+    <form className="prestigio-responsive-central-pane">
       <div className="row pr-close-row">
         <div className="col col-auto mb-3">
           <button
-            onClick={e => saveOption("all")}
+            onClick={e => {
+              sendOption(e, "all");
+            }}
             type="submit"
             className="prestigio-btn prestigio-blue-white-inverse metrics-picker selected prestigio-shadow"
           >
@@ -23,7 +22,9 @@ function FilterBox({ saveMentionedSocialPost }) {
         </div>
         <div className="col col-auto mb-3">
           <button
-            onClick={e => saveOption("facebook")}
+            onClick={e => {
+              sendOption(e, "facebook");
+            }}
             type="submit"
             className="prestigio-btn square metrics-picker prestigio-shadow facebook"
           >
@@ -32,7 +33,9 @@ function FilterBox({ saveMentionedSocialPost }) {
         </div>
         <div className="col col-auto mb-3">
           <button
-            onClick={e => saveOption("instagram")}
+            onClick={e => {
+              sendOption(e, "instagram");
+            }}
             type="submit"
             className="prestigio-btn square metrics-picker prestigio-shadow instagram"
           >

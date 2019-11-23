@@ -8,6 +8,7 @@ import Error from "./components/Error";
 
 function App() {
   const [query, saveQuery] = useState("");
+  const [option, saveOption] = useState("all");
   const [mentionedSocialPost, saveMentionedSocialPost] = useState([]);
   const [topMentioners, saveTopMentioners] = useState([]);
   const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
@@ -90,7 +91,12 @@ function App() {
     saveTopMentioners(Object.values(topMentionerList));
   };
 
-  }, [query, currentPage]);
+  const filteredPosts = () => {
+    if (option === "all") {
+      return mentionedSocialPost;
+    }
+    return mentionedSocialPost.filter(post => post.social === option);
+  };
 
   return (
     <div className="App brand-prestigio">
@@ -100,7 +106,7 @@ function App() {
             <div className="row no-gutters">
               <div className="col col-10 col-lg-10 col-md-8 col-sm-8 offset-1 offset-lg-1 offset-md-2 offset-sm-2 prestigio-white-stripe prestigio-shadow">
                 <SearchBox saveQuery={saveQuery} />
-                <FilterBox saveMentionedSocialPost={saveMentionedSocialPost} />
+                <FilterBox saveOption={saveOption} option={option} />
                 <div
                   className="prestigio-tab-pane"
                   style={{ display: `block` }}
@@ -110,7 +116,7 @@ function App() {
                   <div className="prestigio-offset-pane-big">
                     <div className="row pr-responsive-row">
                       <MentionedSocialPostList
-                        mentionedSocialPost={mentionedSocialPost}
+                        mentionedSocialPost={filteredPosts()}
                       />
                       <TopMentionersList topMentioners={topMentioners} />
                     </div>
