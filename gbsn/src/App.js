@@ -40,12 +40,12 @@ function App() {
   const queryAPI = async () => {
     let brand = "";
     const postPerPage = 4;
-    const includes = `user%2Csocial%2Cmentions.brand`;
+    const includes = `user,social,mentions.brand`;
 
     const baseURL = `https://adcaller.com/`;
     const brandURL = `${baseURL}brands`;
     // const userBaseURL = `${baseURL}users`
-    const sidBrandURL = `${brandURL}?qField=brand_name&qValue=${query}`;
+    const sidBrandURL = `${brandURL}?qField=brand_name&qValue=${encodeURIComponent(query)}`;
     //https://adcaller.com/brands?qField=brand_name&qValue=me
 
     if (query === "") return;
