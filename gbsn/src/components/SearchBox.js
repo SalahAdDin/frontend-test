@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Error from "./Error";
 
-function SearchBox({ saveQuery }) {
+function SearchBox({ saveQuery, saveOrderField }) {
   const [searchedTerm, saveSearchedTerm] = useState("");
   // Handle select field
   const [error, saveError] = useState(false);
@@ -30,9 +30,12 @@ function SearchBox({ saveQuery }) {
     <form onSubmit={searchPost} className="prestigio-responsive-central-pane">
       <div className="form-row pr-close-row">
         <div className="form-group col col-12 col-md-4 mb-2 mb-md-3">
-          <select className="form-control prestigio-new-input w-100 pr-select">
-            <option>Date</option>
-            <option>Name</option>
+          <select 
+          onKeyDown={e => requestData(e.target.value)}
+          onChange={e => saveOrderField(e.target.value)}
+          className="form-control prestigio-new-input w-100 pr-select">
+            <option value="post_created_at">Date</option>
+            <option value="usersid">Name</option>
           </select>
         </div>
         <div className="form-group col col-12 col-md-auto ml-auto mb-3">

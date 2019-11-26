@@ -8,6 +8,7 @@ import Error from "./components/Error";
 
 function App() {
   const [query, saveQuery] = useState("");
+  const [orderField, saveOrderField] = useState("");
   const [option, saveOption] = useState("all");
   const [mentionedSocialPost, saveMentionedSocialPost] = useState([]);
   const [topMentioners, saveTopMentioners] = useState([]);
@@ -41,6 +42,7 @@ function App() {
     let brand = "";
     const postPerPage = 4;
     const includes = `user,social,mentions.brand`;
+    const sorting=`sortField=${orderField}&sortOrder=asc`
 
     const baseURL = `https://adcaller.com/`;
     const brandURL = `${baseURL}brands`;
@@ -65,8 +67,12 @@ function App() {
       // if it cannot get the result, raise an error
     }
 
-    const url = `${brandURL}/${brand}/mentioned_social_posts?limit=${postPerPage}&includes=${includes}&page=${currentPage}`;
-    /* https://adcaller.com/brands/Z2EfoOUFQJVs39lg/mentioned_social_posts?page=2&limit=4&includes=social%2Cmentions.brand*/
+    const url = `${brandURL}/${brand}/mentioned_social_posts?page=${currentPage}&limit=${postPerPage}&${sorting}&includes=${encodeURIComponent(includes)}`;
+    /* https://adcaller.com/brands/Z2EfoOUFQJVs39lg/mentioned_social_posts?sortField=userid&sortOrder=asc&page=2&limit=4&includes=social%2Cmentions.brand&*/
+    
+    console.log('====================================');
+    console.log(url);
+    console.log('====================================');
     const answer = await fetch(url);
     const result = await answer.json();
 
@@ -105,7 +111,7 @@ function App() {
           <div className="col col-lg-6 offset-lg-3">
             <div className="row no-gutters">
               <div className="col col-10 col-lg-10 col-md-8 col-sm-8 offset-1 offset-lg-1 offset-md-2 offset-sm-2 prestigio-white-stripe prestigio-shadow">
-                <SearchBox saveQuery={saveQuery} />
+                <SearchBox saveQuery={saveQuery} saveOrderField={saveOrderField}/>
                 <FilterBox saveOption={saveOption} option={option} />
                 <div
                   className="prestigio-tab-pane"

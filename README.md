@@ -38,15 +38,15 @@ A: We like to be open minded and give the opportunity of working in what you thi
 
 | Task | Task info | Notes | Points   (0-200) | Status |
 | --- | --- | --- | --- | -- |
-| Posts | Fill Brand Mentioned Social Posts. | There is a specific API call for this*.| 60 | [x] |
-| Post Metrics | Fill Brand Mentioned Social Posts Metrics. | Include the social metrics of said Posts. | 5 | [x] |
-| User Metrics | Fill the User metrics | Include the User Social Metrics, reach and engagement. | 15 | [x] |
-| Other Mentions | Inside the Metrics Show other mentioned Brands. | Include Other brands who also mentioned this post. | 30 |
-| Sort | Sort Posts by post created date and by user who created (displayname). | Use API Sort parameters to Sort the Results. | 10 |
-| Filter | Filter posts by all, Facebook and Instagram. | Use API social parameter to Filter the results. | 10 | [x] |
-| Search | Search User who created (displayname) | Use API search parameters to filter the results. | 10 |
-| Scroll | Use Pagination to achieve a scroll Load. 4 each load| Use API pagination for this task. | 20 | [x] |
-| Top Mentioners  | Show top 5 mentioners of the brand by most mentions. | Use API mentions for the specific /brand/me and calculate in Front-End.** | 40 | [x] |
+| Posts | Fill Brand Mentioned Social Posts. | There is a specific API call for this*.| 60 | :heavy_check_mark: |
+| Post Metrics | Fill Brand Mentioned Social Posts Metrics. | Include the social metrics of said Posts. | 5 | :heavy_check_mark: |
+| User Metrics | Fill the User metrics | Include the User Social Metrics, reach and engagement. | 15 | :heavy_check_mark: |
+| Other Mentions | Inside the Metrics Show other mentioned Brands. | Include Other brands who also mentioned this post. | 30 | :heavy_check_mark: |
+| Sort | Sort Posts by post created date and by user who created (displayname). | Use API Sort parameters to Sort the Results. | 10 |:heavy_check_mark:|
+| Filter | Filter posts by all, Facebook and Instagram. | Use API social parameter to Filter the results. | 10 | :heavy_check_mark: |
+| Search | Search User who created (displayname) | Use API search parameters to filter the results. | 10 |:heavy_check_mark:(i don't get it)|
+| Scroll | Use Pagination to achieve a scroll Load. 4 each load| Use API pagination for this task. | 20 | :heavy_check_mark: |
+| Top Mentioners  | Show top 5 mentioners of the brand by most mentions. | Use API mentions for the specific /brand/me and calculate in Front-End.** | 40 | :heavy_check_mark: |
 
 *https://adcaller.com/brands/me/mentioned_social_posts    
 **https://adcaller.com/brand/me/mentions
