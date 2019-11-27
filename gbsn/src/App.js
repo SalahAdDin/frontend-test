@@ -14,12 +14,13 @@ function App() {
   const [topMentioners, saveTopMentioners] = useState([]);
   const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   const [currentPage, saveCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [allPostsLoaded, setPostsLoaded] = useState(false);
   const [error, saveError] = useState(false);
   // const [totalPages, saveTotalPages] = useState(1);
 
   function fetchMoreListItems() {
-    if (!allPostsLoaded) {
+    if (!allPostsLoaded || currentPage!==totalPages) {
       saveCurrentPage(currentPage + 1);
     }
   }
@@ -28,6 +29,7 @@ function App() {
     saveTopMentioners([]);
     saveMentionedSocialPost([]);
     saveCurrentPage(1);
+    setTotalPages(1);
     setPostsLoaded(false);
     queryAPI();
   }, [query]);
@@ -70,11 +72,15 @@ function App() {
     const url = `${brandURL}/${brand}/mentioned_social_posts?page=${currentPage}&limit=${postPerPage}&${sorting}&includes=${encodeURIComponent(includes)}`;
     /* https://adcaller.com/brands/Z2EfoOUFQJVs39lg/mentioned_social_posts?sortField=userid&sortOrder=asc&page=2&limit=4&includes=social%2Cmentions.brand&*/
     
-    console.log('====================================');
-    console.log(url);
-    console.log('====================================');
     const answer = await fetch(url);
     const result = await answer.json();
+
+    setTotalPages(Math.ceil(result.meta.totalResults / postPerPage));
+
+    console.log('====================================');
+    console.log(`Total pages (postPerPage over current totalResults): ${Math.ceil(result.meta.totalResults / postPerPage)}`);
+    console.log(`Current totalPages(state): ${totalPages}`);    
+    console.log('====================================');
 
     // TODO: Get top mentioner list
     let topMentionerList = result.data.attributes.reduce((r, a) => {
