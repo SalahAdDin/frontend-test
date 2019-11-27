@@ -8,7 +8,7 @@ import Error from "./components/Error";
 
 function App() {
   const [query, saveQuery] = useState("");
-  const [orderField, saveOrderField] = useState("");
+  const [orderField, saveOrderField] = useState("post_created_at");
   const [option, saveOption] = useState("all");
   const [mentionedSocialPost, saveMentionedSocialPost] = useState([]);
   const [topMentioners, saveTopMentioners] = useState([]);
