@@ -4,6 +4,11 @@
 
 Clone this repository and use a local hosting service like Node, Nginx or Apache.
 
+## Start project
+
+Just go to the **gbsn** folder and run the project:
+`cd gbsn && yarn start`
+
 ### Project info
 
 | Start Date | Finish Date | Project Name |
