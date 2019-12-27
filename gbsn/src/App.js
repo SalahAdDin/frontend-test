@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import useInfiniteScroll from "./components/useInfiniteScroll";
 import SearchBox from "./components/SearchBox";
 import FilterBox from "./components/FiltersBox";
 import MentionedSocialPostList from "./components/MentionedSocialPostList";
@@ -12,25 +11,14 @@ function App() {
   const [option, saveOption] = useState("all");
   const [mentionedSocialPost, saveMentionedSocialPost] = useState([]);
   const [topMentioners, saveTopMentioners] = useState([]);
-  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   const [currentPage, saveCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [allPostsLoaded, setPostsLoaded] = useState(false);
+  const [totalPost, setTotalPost] = useState(0);
   const [error, saveError] = useState(false);
-  // const [totalPages, saveTotalPages] = useState(1);
-
-  function fetchMoreListItems() {
-    if (!allPostsLoaded || currentPage !== totalPages) {
-      saveCurrentPage(currentPage + 1);
-    }
-  }
 
   useEffect(() => {
     saveTopMentioners([]);
     saveMentionedSocialPost([]);
     saveCurrentPage(1);
-    setTotalPages(1);
-    setPostsLoaded(false);
     queryAPI();
   }, [query]);
 
@@ -79,18 +67,8 @@ function App() {
     const answer = await fetch(url);
     const result = await answer.json();
 
-    setTotalPages(Math.ceil(result.meta.totalResults / postPerPage));
+    setTotalPost(result.meta.totalResults);
 
-    console.log("====================================");
-    console.log(
-      `Total pages (postPerPage over current totalResults): ${Math.ceil(
-        result.meta.totalResults / postPerPage
-      )}`
-    );
-    console.log(`Current totalPages(state): ${totalPages}`);
-    console.log("====================================");
-
-    // TODO: Get top mentioner list
     let topMentionerList = result.data.attributes.reduce((r, a) => {
       r[a.usersid] = [...(r[a.usersid] || []), a];
       r[a.usersid]["name"] = a.user[0].userinfo.displayname;
@@ -101,12 +79,7 @@ function App() {
       return r;
     }, {});
 
-    if (!result.data.attributes.length) {
-      setPostsLoaded(true);
-    }
-
     saveError(false);
-    setIsFetching(false);
     saveMentionedSocialPost(m => [...m, ...result.data.attributes]);
     saveTopMentioners(
       Object.values(topMentionerList).sort((a, b) => b.length - a.length)
@@ -142,11 +115,13 @@ function App() {
                     <div className="row pr-responsive-row">
                       <MentionedSocialPostList
                         mentionedSocialPost={filteredPosts()}
+                        saveCurrentPage={saveCurrentPage}
+                        currentPage={currentPage}
+                        totalPost={totalPost}
                       />
                       <TopMentionersList topMentioners={topMentioners} />
                     </div>
                   </div>
-                  {isFetching && "Fetching more list items..."}
                 </div>
                 {error ? (
                   <Error message="No brand was matched with your query!" />
