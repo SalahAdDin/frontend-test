@@ -2,20 +2,16 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SocialPost from "./SocialPost";
 
-function MentionedSocialPostList({ mentionedSocialPost }) {
+function MentionedSocialPostList({ mentionedSocialPost, currentPage, saveCurrentPage, totalPost }) {
   console.log(mentionedSocialPost);
 
   return (
     <div className="col col-12 col-lg-8">
-      {/* <div className="mention-container">
-        {mentionedSocialPost.map(post => (
-          <SocialPost post={post} key={post.id} />
-        ))}
-      </div> */}
       <InfiniteScroll
         className="mention-container"
+        style={{overflow: 'inherit'}}
         dataLength={mentionedSocialPost.length}
-        // next={queryAPI()}
+        next={e => saveCurrentPage(currentPage + 1)}
         loader={
           <div className="text-center">
             <div className="spinner-border" role="status">
@@ -23,8 +19,8 @@ function MentionedSocialPostList({ mentionedSocialPost }) {
             </div>
           </div>
         }
-        hasMore={true}
-      >
+        hasMore={totalPost>mentionedSocialPost.length ? true: false}
+      >{mentionedSocialPost.length}
         {mentionedSocialPost.map(post => (
           <SocialPost post={post} key={post.id} />
         ))}

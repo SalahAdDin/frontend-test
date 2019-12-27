@@ -15,6 +15,7 @@ function App() {
   const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   const [currentPage, saveCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalPost, setTotalPost] = useState(0);
   const [allPostsLoaded, setPostsLoaded] = useState(false);
   const [error, saveError] = useState(false);
   // const [totalPages, saveTotalPages] = useState(1);
@@ -80,6 +81,7 @@ function App() {
     const result = await answer.json();
 
     setTotalPages(Math.ceil(result.meta.totalResults / postPerPage));
+    setTotalPost(result.meta.totalResults);
 
     console.log("====================================");
     console.log(
@@ -144,6 +146,7 @@ function App() {
                         mentionedSocialPost={filteredPosts()}
                         saveCurrentPage={saveCurrentPage}
                         currentPage = {currentPage}
+                        totalPost = {totalPost}
                       />
                       <TopMentionersList topMentioners={topMentioners} />
                     </div>
