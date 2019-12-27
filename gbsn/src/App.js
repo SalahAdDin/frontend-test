@@ -20,7 +20,7 @@ function App() {
   // const [totalPages, saveTotalPages] = useState(1);
 
   function fetchMoreListItems() {
-    if (!allPostsLoaded || currentPage!==totalPages) {
+    if (!allPostsLoaded || currentPage !== totalPages) {
       saveCurrentPage(currentPage + 1);
     }
   }
@@ -44,12 +44,14 @@ function App() {
     let brand = "";
     const postPerPage = 4;
     const includes = `user,social,mentions.brand`;
-    const sorting=`sortField=${orderField}&sortOrder=asc`
+    const sorting = `sortField=${orderField}&sortOrder=asc`;
 
     const baseURL = `https://adcaller.com/`;
     const brandURL = `${baseURL}brands`;
     // const userBaseURL = `${baseURL}users`
-    const sidBrandURL = `${brandURL}?qField=brand_name&qValue=${encodeURIComponent(query)}`;
+    const sidBrandURL = `${brandURL}?qField=brand_name&qValue=${encodeURIComponent(
+      query
+    )}`;
     //https://adcaller.com/brands?qField=brand_name&qValue=me
 
     if (query === "") return;
@@ -69,18 +71,24 @@ function App() {
       // if it cannot get the result, raise an error
     }
 
-    const url = `${brandURL}/${brand}/mentioned_social_posts?page=${currentPage}&limit=${postPerPage}&${sorting}&includes=${encodeURIComponent(includes)}`;
+    const url = `${brandURL}/${brand}/mentioned_social_posts?page=${currentPage}&limit=${postPerPage}&${sorting}&includes=${encodeURIComponent(
+      includes
+    )}`;
     /* https://adcaller.com/brands/Z2EfoOUFQJVs39lg/mentioned_social_posts?sortField=userid&sortOrder=asc&page=2&limit=4&includes=social%2Cmentions.brand&*/
-    
+
     const answer = await fetch(url);
     const result = await answer.json();
 
     setTotalPages(Math.ceil(result.meta.totalResults / postPerPage));
 
-    console.log('====================================');
-    console.log(`Total pages (postPerPage over current totalResults): ${Math.ceil(result.meta.totalResults / postPerPage)}`);
-    console.log(`Current totalPages(state): ${totalPages}`);    
-    console.log('====================================');
+    console.log("====================================");
+    console.log(
+      `Total pages (postPerPage over current totalResults): ${Math.ceil(
+        result.meta.totalResults / postPerPage
+      )}`
+    );
+    console.log(`Current totalPages(state): ${totalPages}`);
+    console.log("====================================");
 
     // TODO: Get top mentioner list
     let topMentionerList = result.data.attributes.reduce((r, a) => {
@@ -89,9 +97,9 @@ function App() {
       r[a.usersid]["key"] = a.usersid;
       r[a.usersid]["picture"] = a.user[0].userinfo.avatar_url;
       // TODO: just add increase a counter and add the name and photo url
+
       return r;
     }, {});
-    // TODO: sort in descendent order
 
     if (!result.data.attributes.length) {
       setPostsLoaded(true);
@@ -119,7 +127,10 @@ function App() {
           <div className="col col-lg-6 offset-lg-3">
             <div className="row no-gutters">
               <div className="col col-10 col-lg-10 col-md-8 col-sm-8 offset-1 offset-lg-1 offset-md-2 offset-sm-2 prestigio-white-stripe prestigio-shadow">
-                <SearchBox saveQuery={saveQuery} saveOrderField={saveOrderField}/>
+                <SearchBox
+                  saveQuery={saveQuery}
+                  saveOrderField={saveOrderField}
+                />
                 <FilterBox saveOption={saveOption} option={option} />
                 <div
                   className="prestigio-tab-pane"
