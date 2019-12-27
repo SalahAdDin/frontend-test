@@ -2,14 +2,19 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import SocialPost from "./SocialPost";
 
-function MentionedSocialPostList({ mentionedSocialPost, currentPage, saveCurrentPage, totalPost }) {
+function MentionedSocialPostList({
+  mentionedSocialPost,
+  currentPage,
+  saveCurrentPage,
+  totalPost
+}) {
   console.log(mentionedSocialPost);
 
   return (
     <div className="col col-12 col-lg-8">
       <InfiniteScroll
         className="mention-container"
-        style={{overflow: 'inherit'}}
+        style={{ overflow: "inherit" }}
         dataLength={mentionedSocialPost.length}
         next={e => saveCurrentPage(currentPage + 1)}
         loader={
