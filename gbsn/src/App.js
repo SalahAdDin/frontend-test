@@ -142,6 +142,8 @@ function App() {
                     <div className="row pr-responsive-row">
                       <MentionedSocialPostList
                         mentionedSocialPost={filteredPosts()}
+                        saveCurrentPage={saveCurrentPage}
+                        currentPage = {currentPage}
                       />
                       <TopMentionersList topMentioners={topMentioners} />
                     </div>

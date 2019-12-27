@@ -6,6 +6,7 @@
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
     "react-hashtag": "^2.1.2",
+    "react-infinite-scroll-component": "^5.0.4",
     "react-scripts": "3.2.0"
   },
   "scripts": {
