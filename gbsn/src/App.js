@@ -100,7 +100,9 @@ function App() {
     saveError(false);
     setIsFetching(false);
     saveMentionedSocialPost(m => [...m, ...result.data.attributes]);
-    saveTopMentioners(Object.values(topMentionerList));
+    saveTopMentioners(
+      Object.values(topMentionerList).sort((a, b) => b.length - a.length)
+    );
   };
 
   const filteredPosts = () => {
