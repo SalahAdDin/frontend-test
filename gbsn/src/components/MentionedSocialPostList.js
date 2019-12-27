@@ -8,7 +8,6 @@ function MentionedSocialPostList({
   saveCurrentPage,
   totalPost
 }) {
-  console.log(mentionedSocialPost);
 
   return (
     <div className="col col-12 col-lg-8">
@@ -24,7 +23,7 @@ function MentionedSocialPostList({
             </div>
           </div>
         }
-        hasMore={totalPost > mentionedSocialPost.length ? true : false}
+        hasMore={totalPost > mentionedSocialPost.length}
       >
         {mentionedSocialPost.map(post => (
           <SocialPost post={post} key={post.id} />
