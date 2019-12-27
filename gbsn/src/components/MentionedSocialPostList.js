@@ -19,8 +19,8 @@ function MentionedSocialPostList({ mentionedSocialPost, currentPage, saveCurrent
             </div>
           </div>
         }
-        hasMore={totalPost>mentionedSocialPost.length ? true: false}
-      >{mentionedSocialPost.length}
+        hasMore={totalPost > mentionedSocialPost.length ? true : false}
+      >
         {mentionedSocialPost.map(post => (
           <SocialPost post={post} key={post.id} />
         ))}
