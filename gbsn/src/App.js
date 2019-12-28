@@ -59,16 +59,24 @@ function App() {
       // if it cannot get the result, raise an error
     }
 
-    const url = `${brandURL}/${brand}/mentioned_social_posts?page=${currentPage}&limit=${postPerPage}&${sorting}&includes=${encodeURIComponent(
+    const url = `${brandURL}/${brand}/mentioned_social_posts?${sorting}&includes=${encodeURIComponent(
       includes
     )}`;
+
+    const urlPerPage = `${url}&page=${currentPage}&limit=${postPerPage}`
+    /* For filtering using the API 
+    qField=social&qValue={}
+    */
     /* https://adcaller.com/brands/Z2EfoOUFQJVs39lg/mentioned_social_posts?sortField=userid&sortOrder=asc&page=2&limit=4&includes=social%2Cmentions.brand&*/
 
+    const answerPerPage = await fetch(urlPerPage);
     const answer = await fetch(url);
+    const resultPerPage = await answerPerPage.json();
     const result = await answer.json();
 
-    setTotalPost(result.meta.totalResults);
+    setTotalPost(resultPerPage.meta.totalResults);
 
+    // Note: this must to be an API's endpoint
     let topMentionerList = result.data.attributes.reduce((r, a) => {
       r[a.usersid] = [...(r[a.usersid] || []), a];
       r[a.usersid]["name"] = a.user[0].userinfo.displayname;
@@ -80,7 +88,7 @@ function App() {
     }, {});
 
     saveError(false);
-    saveMentionedSocialPost(m => [...m, ...result.data.attributes]);
+    saveMentionedSocialPost(m => [...m, ...resultPerPage.data.attributes]);
     saveTopMentioners(
       Object.values(topMentionerList).sort((a, b) => b.length - a.length)
     );
