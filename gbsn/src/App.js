@@ -4,10 +4,12 @@ import FilterBox from "./components/FiltersBox";
 import MentionedSocialPostList from "./components/MentionedSocialPostList";
 import TopMentionersList from "./components/TopMentionersList";
 import Error from "./components/Error";
+import { sortBy } from "lodash";
 
 function App() {
   const [query, saveQuery] = useState("");
   const [orderField, saveOrderField] = useState("post_created_at");
+  const [fetchOrderField, saveFetchOrderField] = useState("post_created_at");
   const [option, saveOption] = useState("all");
   const [mentionedSocialPost, saveMentionedSocialPost] = useState([]);
   const [topMentioners, saveTopMentioners] = useState([]);
@@ -28,6 +30,28 @@ function App() {
     }
   }, [currentPage]);
 
+  useEffect(() => {
+    sortData();
+  }, [orderField]);
+
+  const sortData = () => {
+    if (orderField !== fetchOrderField) {
+      switch (orderField) {
+        case "post_created_at":
+          saveMentionedSocialPost(
+            sortBy(mentionedSocialPost, [o => o.post_created_at])
+          );
+          break;
+        case "usersid":
+          saveMentionedSocialPost(
+            sortBy(mentionedSocialPost, [o => o.user[0].userinfo.displayname])
+          );
+        default:
+          break;
+      }
+    }
+  };
+
   const queryAPI = async () => {
     let brand = "";
     const postPerPage = 4;
@@ -41,6 +65,8 @@ function App() {
       query
     )}`;
     //https://adcaller.com/brands?qField=brand_name&qValue=me
+
+    saveFetchOrderField(orderField);
 
     if (query === "") return;
     else if (query === "me") brand = "Z2EfoOUFQJVs39lg";
@@ -59,24 +85,17 @@ function App() {
       // if it cannot get the result, raise an error
     }
 
-    const url = `${brandURL}/${brand}/mentioned_social_posts?${sorting}&includes=${encodeURIComponent(
+    const url = `${brandURL}/${brand}/mentioned_social_posts?page=${currentPage}&limit=${postPerPage}&${sorting}&includes=${encodeURIComponent(
       includes
     )}`;
-
-    const urlPerPage = `${url}&page=${currentPage}&limit=${postPerPage}`
-    /* For filtering using the API 
-    qField=social&qValue={}
-    */
     /* https://adcaller.com/brands/Z2EfoOUFQJVs39lg/mentioned_social_posts?sortField=userid&sortOrder=asc&page=2&limit=4&includes=social%2Cmentions.brand&*/
 
-    const answerPerPage = await fetch(urlPerPage);
     const answer = await fetch(url);
-    const resultPerPage = await answerPerPage.json();
     const result = await answer.json();
 
-    setTotalPost(resultPerPage.meta.totalResults);
+    // TODO:
+    setTotalPost(result.meta.totalResults);
 
-    // Note: this must to be an API's endpoint
     let topMentionerList = result.data.attributes.reduce((r, a) => {
       r[a.usersid] = [...(r[a.usersid] || []), a];
       r[a.usersid]["name"] = a.user[0].userinfo.displayname;
@@ -88,7 +107,7 @@ function App() {
     }, {});
 
     saveError(false);
-    saveMentionedSocialPost(m => [...m, ...resultPerPage.data.attributes]);
+    saveMentionedSocialPost(m => [...m, ...result.data.attributes]);
     saveTopMentioners(
       Object.values(topMentionerList).sort((a, b) => b.length - a.length)
     );
